@@ -1,0 +1,19 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 4534649">
+<g id="Group 4534643">
+<g id="Union" filter="url(#filter0_b_872_1635)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.1767 6.20674H8.07385L17.2265 2.08785C17.7302 1.86121 18.3222 2.08575 18.5488 2.58939L20.1767 6.20674ZM5 7.77725C3.89543 7.77725 3 8.67268 3 9.77724V21.4915C3 22.5961 3.89543 23.4915 5 23.4915H23C24.1046 23.4915 25 22.5961 25 21.4915V9.77725C25 8.67268 24.1046 7.77725 23 7.77725H5Z" fill="#5D6575"/>
+</g>
+<path id="Rectangle 6822" d="M26 12H21C19.8954 12 19 12.8954 19 14V17C19 18.1046 19.8954 19 21 19H26V12Z" fill="#FFC40B"/>
+<ellipse id="Ellipse 512" cx="21.8571" cy="15.5714" rx="1.57143" ry="1.57143" fill="white"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_b_872_1635" x="0" y="-1.00048" width="28" height="27.492" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="1.5"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_872_1635"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_872_1635" result="shape"/>
+</filter>
+</defs>
+</svg>

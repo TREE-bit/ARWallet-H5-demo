@@ -1,0 +1,1 @@
+import{Vue3Lottie as a}from"./vue3-lottie.es-209050f8.js";import{l as t}from"./loading-7694505b.js";import{m as o,K as i,U as s,u as e}from"./vue-vendor-fa589de8.js";import"./vant-5c9c8dfc.js";const m=o({__name:"loadingLottie",setup:o=>(o,m)=>(i(),s(e(a),{animationData:e(t),height:100,width:100},null,8,["animationData"]))});export{m as default};

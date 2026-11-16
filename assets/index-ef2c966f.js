@@ -1,0 +1,1 @@
+import{a9 as a,aZ as e,aa as t}from"./main-de5d7909.js";function n(t){return a.post("/ar-wallet/apiCenter/confirmPayment",e(t,["paymentPassword"]))}function r(e){return a.get("/ar-wallet/apiCenter/retrievePaymentDetails?token="+e)}function s(e){return a.post("/ar-wallet/apiCenter/cancelPayment",e)}function o(a){return Promise.resolve(t(null))}export{s as a,o as b,n as c,r as p};

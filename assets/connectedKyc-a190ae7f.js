@@ -1,0 +1,1 @@
+const t=t=>`connectedKycOrder_${t}`,e=(t,e)=>1===e&&1===Number(null==t?void 0:t.linkStatus),r=(e,r)=>{if(e&&r)try{sessionStorage.setItem(t(e),String(r))}catch(s){}},s=e=>{if(e)try{sessionStorage.removeItem(t(e))}catch(r){}},n=(e,r)=>{if(!e||!r)return!1;try{return sessionStorage.getItem(t(e))===String(r)}catch(s){return!1}};export{n as a,s as c,e as i,r as m};

@@ -1,0 +1,19 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 4534650">
+<g id="Group 4534643">
+<g id="Subtract" filter="url(#filter0_b_872_1623)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3 6.00038C1.89543 6.00038 1 6.89581 1 8.00038V20.0004C1 21.105 1.89543 22.0004 3 22.0004H25C26.1046 22.0004 27 21.105 27 20.0004V8.00038C27 6.89581 26.1046 6.00038 25 6.00038H3ZM15.0555 11.6117C15.0555 11.0287 15.5281 10.5561 16.1111 10.5561H22.4444C23.0274 10.5561 23.5 11.0287 23.5 11.6117C23.5 12.1947 23.0274 12.6673 22.4444 12.6673H16.1111C15.5281 12.6673 15.0555 12.1947 15.0555 11.6117ZM15.0555 15.8343C15.0555 15.2513 15.5281 14.7787 16.1111 14.7787H22.4444C23.0274 14.7787 23.5 15.2513 23.5 15.8343C23.5 16.4172 23.0274 16.8898 22.4444 16.8898H16.1111C15.5281 16.8898 15.0555 16.4172 15.0555 15.8343Z" fill="#5D6575"/>
+</g>
+<path id="Ellipse 512" d="M8.72222 14.2504C6.39035 14.2504 4.5 15.8707 4.5 17.8694H12.9444C12.9444 15.8707 11.0541 14.2504 8.72222 14.2504Z" fill="#FFC40B"/>
+<ellipse id="Ellipse 513" cx="8.72239" cy="12.1393" rx="2.63889" ry="2.63889" fill="#FFC40B"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_b_872_1623" x="-2" y="3.00038" width="32" height="22" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="1.5"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_872_1623"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_872_1623" result="shape"/>
+</filter>
+</defs>
+</svg>

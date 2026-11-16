@@ -1,0 +1,1 @@
+import{_ as o}from"./main-de5d7909.js";import{K as r,L as s}from"./vue-vendor-fa589de8.js";import"./main-f12dc869.js";import"./modulepreload-polyfill-4abee2a4.js";import"./vant-5c9c8dfc.js";import"./vendor-f10e4ea9.js";const t={class:"x-serve"};const e=o({},[["render",function(o,e){return r(),s("div",t," 7*24客服 ")}]]);export{e as default};

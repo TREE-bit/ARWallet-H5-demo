@@ -1,0 +1,28 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon_my1" clip-path="url(#clip0_863_10756)">
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M15 11.0004C16.2144 10.0882 17 8.63582 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 8.63582 7.78555 10.0882 9 11.0004V17C9 17.5523 9.44772 18 10 18H14C14.5523 18 15 17.5523 15 17V11.0004Z" fill="url(#paint0_linear_863_10756)"/>
+<g id="Subtract" filter="url(#filter0_b_863_10756)">
+<path d="M3 19.9999C3 15.5816 6.58172 11.9999 11 11.9999H13C17.4183 11.9999 21 15.5816 21 19.9999V20.9999C21 21.5522 20.5523 21.9999 20 21.9999H4C3.44772 21.9999 3 21.5522 3 20.9999V19.9999Z" fill="url(#paint1_linear_863_10756)"/>
+</g>
+<path id="Rectangle 6816" d="M14.5 19L12 14L9.5 19L12 19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_b_863_10756" x="0" y="8.99991" width="24" height="16" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="1.5"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_863_10756"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_863_10756" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_863_10756" x1="12" y1="2" x2="12" y2="12.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFD551"/>
+<stop offset="1" stop-color="#FFC40B"/>
+</linearGradient>
+<linearGradient id="paint1_linear_863_10756" x1="12" y1="10.8888" x2="12" y2="21.9999" gradientUnits="userSpaceOnUse">
+<stop stop-color="#695E3D" stop-opacity="0.3"/>
+<stop offset="1" stop-color="#423F37" stop-opacity="0.9"/>
+</linearGradient>
+<clipPath id="clip0_863_10756">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

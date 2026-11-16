@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- 不做 API preconnect：运行时会从 domain.json 探测选择最快 API 域名（生产
+         候选列表并不包含 VITE_BAST_URL），探测的 HEAD 请求本身就会预热选中的域名。 -->
+    <link rel="icon" type="image/svg+xml" href="./img/logo.png" />
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="AR Wallet">
+    <meta name="description" content="Trade together. Earn together.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Trade together. Earn together.">
+    <meta property="og:description" content="Invite friends to complete sign-up and basic tasks to unlock rewards.">
+    <!-- <meta property="og:url" content="https://example.com/page"> -->
+    <!-- <meta property="og:image" content="https://video.arbpay.me/video/ogImage.png"> -->
+    <meta property="og:image" content="https://video.arbpay.me/video/ogImage.png" data-runtime-video="/video/ogImage.png">
+    <meta property="og:site_name" content="AR Wallet">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Trade together. Earn together.">
+    <meta name="twitter:description" content="Invite friends to complete sign-up and basic tasks to unlock rewards.">
+    <!-- <meta name="twitter:image" content="https://video.arbpay.me/video/ogImage.png"> -->
+    <meta name="twitter:image" content="https://video.arbpay.me/video/ogImage.png" data-runtime-video="/video/ogImage.png">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="manifest"  />
+
+    <title>AR Wallet</title>
+    <!--
+      根字号必须在首次绘制之前同步设定。
+      本文件的内联 <style> 同样会经过 postcss-pxtorem（rootValue: 39），下方
+      .app-bootstrap-loading 的 max-width:390px 在产物里其实是 10rem，与
+      style.scss 的 #app{width:10rem} 一致。若根字号此时仍是浏览器默认的 16px，
+      首屏会先按 10×16=160px 画一帧，等 main.js 加载完再撑到最终宽度，
+      桌面端就表现为「由小变大」闪一下。
+
+      DESIGN_WIDTH 为 UI 设计稿宽度，桌面端页面宽度固定为该值。
+      上限只在桌面端生效：手机端必须按实际视口宽度换算，否则 390/430 宽的机型会被
+      压到 375，右侧露出背景。断点 500 与 style.scss 中 #app{width:10rem} 的
+      @media(min-width:500px) 一致，两者需同步修改。
+    -->
+    <script>
+      (function () {
+        var DESIGN_WIDTH = 375
+        var DESKTOP_BREAKPOINT = 500
+        var docEl = document.documentElement
+        function setRootFontSize() {
+          var width = docEl.clientWidth || window.innerWidth || DESIGN_WIDTH
+          if (width >= DESKTOP_BREAKPOINT) width = DESIGN_WIDTH
+          docEl.style.fontSize = width / 10 + 'px'
+        }
+        setRootFontSize()
+        window.addEventListener('resize', setRootFontSize, false)
+        window.addEventListener('pageshow', function (e) {
+          if (e.persisted) setRootFontSize()
+        }, false)
+      })()
+    </script>
+    <style>
+      /* 根字号被抬高后，body 需显式给回正常字号，否则首屏未显式设字号的文本会继承
+         根字号。该值原先由 lib-flexible 以内联样式设置。
+         大写 PX 用于让 postcss-pxtorem 跳过转换，保持固定 12px。 */
+      body {
+        font-size: 12PX;
+      }
+      .app-bootstrap-loading {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        z-index: 9999;
+        width: 100%;
+        overflow: hidden;
+        transform: translateX(-50%);
+        background: #fff8e8;
+      }
+      /* .app-bootstrap-spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid rgba(255, 196, 11, 0.25);
+        border-top-color: #ffc40b;
+        border-radius: 50%;
+        animation: app-bootstrap-spin 0.8s linear infinite;
+      } */
+      /* @keyframes app-bootstrap-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      } */
+      .app-bootstrap-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .app-bootstrap-top-coin {
+        position: absolute;
+        top: 0;
+        left: -1%;
+        width: 16%;
+        height: auto;
+      }
+      .app-bootstrap-logo {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        width: 30%;
+        aspect-ratio: 1;
+        height: auto;
+        transform: translate(-50%, -50%);
+      }
+      .app-bootstrap-logo-layer {
+        position: absolute;
+        top: 51%;
+        left: 50%;
+        display: block;
+        object-fit: contain;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        pointer-events: none;
+      }
+      .app-bootstrap-logo-layer-main {
+        z-index: 2;
+        width: 73.3333%;
+        height: 73.3333%;
+        animation: app-bootstrap-logo-main-spin 2.4s linear infinite;
+      }
+      .app-bootstrap-logo-layer-ring {
+        z-index: 1;
+        width: 83.6%;
+        height: 83.6%;
+        animation: app-bootstrap-logo-ring-spin 2.4s ease-in-out infinite;
+      }
+      .app-bootstrap-logo-layer-mark {
+        z-index: 3;
+        width: 35.2%;
+        height: 26.4%;
+      }
+      @keyframes app-bootstrap-logo-main-spin {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+      @keyframes app-bootstrap-logo-ring-spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        83.3333%,
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+      /*
+      .app-bootstrap-brand {
+        position: absolute;
+        top: 33.5%;
+        left: 50%;
+        width: 20%;
+        transform: translateX(-50%);
+        text-align: center;
+      }
+      .app-bootstrap-logo {
+        width: 100%;
+        aspect-ratio: 1;
+      }
+      .app-bootstrap-name {
+        margin-top: 3cqw;
+        color: #17223b;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 5.5cqw;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      */
+      .app-bootstrap-progress {
+        position: absolute;
+        top: 49%;
+        left: 50%;
+        width: 0.61538rem;
+        height: 0.61538rem;
+        border: 0.07692rem solid rgba(255, 196, 11, 0.25);
+        border-top-color: #ffc40b;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        animation: app-bootstrap-progress-spin 0.8s linear infinite;
+      }
+      @keyframes app-bootstrap-progress-spin {
+        from {
+          transform: translateX(-50%) rotate(0deg);
+        }
+        to {
+          transform: translateX(-50%) rotate(360deg);
+        }
+      }
+      .app-bootstrap-bottom-coin {
+        position: absolute;
+        right: 0;
+        /* bottom: 0; */
+        bottom: -1.5%;
+        width: 62.5%;
+        height: auto;
+      }
+      @media screen and (min-width: 500px) {
+        body {
+          margin: 0;
+          background: #9195a3;
+        }
+        .app-bootstrap-loading {
+          max-width: 10rem;
+        }
+      }
+    </style>
+    <!-- pako 仅在解密时用到（本页的 c 参数、应用内的付款链接解密），改为按需
+         动态加载：无解密需求的访客不再下载这 47KB。src/utils/pako.ts 同样通过
+         window.__ensurePako__ 获取。 -->
+    <script>
+      (function () {
+        var pakoLoading = null;
+        window.__ensurePako__ = function () {
+          if (window.pako) return Promise.resolve(window.pako);
+          if (pakoLoading) return pakoLoading;
+          pakoLoading = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = './pako.min.js';
+            s.onload = function () { resolve(window.pako); };
+            s.onerror = function () {
+              pakoLoading = null;
+              reject(new Error('pako.min.js 加载失败'));
+            };
+            document.head.appendChild(s);
+          });
+          return pakoLoading;
+        };
+      })();
+    </script>
+    <!-- <script src="./public/language.js"></script> -->
+    <!-- <script src="https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js"></script> -->
+    <script>
+      // VConsole will be exported to `window.VConsole` by default.
+      // var vConsole = new window.VConsole();
+      // console.log(language)
+
+        // 必须与 Java 端完全一致（16字节 = AES-128）
+    const SECRET_KEY_STR = "ArPaySecretKey12";
+
+    function base64UrlToUint8Array(base64UrlStr) {
+        let base64 = base64UrlStr.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) base64 += '=';
+
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return bytes;
+    }
+
+    async function importAesCtrKeyFromUtf8(str) {
+        const keyBytes = new TextEncoder().encode(str); // UTF-8 bytes
+        if (keyBytes.length !== 16 && keyBytes.length !== 24 && keyBytes.length !== 32) {
+            throw new Error("AES key 长度必须是 16/24/32 字节；当前是 " + keyBytes.length);
+        }
+        return crypto.subtle.importKey(
+            "raw",
+            keyBytes,
+            { name: "AES-CTR" },
+            false,
+            ["decrypt"]
+        );
+    }
+
+    async function decryptAndDecompress(base64UrlStr) {
+        if (!base64UrlStr) return null;
+
+        // 1) base64url -> bytes
+        const allBytes = base64UrlToUint8Array(base64UrlStr.trim());
+        if (allBytes.length <= 16) throw new Error("数据长度不足（至少 16 字节 IV + 密文）");
+
+        // 2) 前 16 字节 IV，后面密文
+        const iv = allBytes.slice(0, 16);
+        const ciphertext = allBytes.slice(16);
+
+        // 3) AES-CTR 解密（注意 counterLength 一般用 128）
+        const key = await importAesCtrKeyFromUtf8(SECRET_KEY_STR);
+        const plainBuf = await crypto.subtle.decrypt(
+            { name: "AES-CTR", counter: iv, length: 128 },
+            key,
+            ciphertext
+    );
+
+      // 4) 解压：pako.inflate(Uint8Array) -> string（按需加载 pako）
+    const pako = await window.__ensurePako__();
+    const plainBytes = new Uint8Array(plainBuf);
+    const decompressedStr = pako.inflate(plainBytes, { to: "string" });
+        return decompressedStr;
+    }
+
+      function getHashParams() {
+        let fragment = window.location.hash;
+        function parseHashParams(fragment) {
+          if (fragment) {
+            const queryStart = fragment.indexOf('?');
+            if (queryStart !== -1) {
+              // 如果存在问号，则截取问号后的部分
+              fragment = fragment.substring(queryStart + 1);
+            }
+            var queryParams = fragment.split('&');
+            var params = {};
+
+            queryParams.forEach(function (param) {
+              var keyValue = param.split('=');
+              params[keyValue[0]] = decodeURIComponent(keyValue[1]);
+            });
+            return params;
+          } else {
+            return {};
+          }
+        }
+        return parseHashParams(fragment);
+      }
+      function queryStringToObject(queryString) {
+        const params = new URLSearchParams(queryString);
+        const obj = {};
+        for (const [key, value] of params.entries()) {
+          obj[key] = value;
+        }
+        return obj;
+      }
+      
+      //解密
+      async function getQuery (){
+        const result = getHashParams();
+        if(!result.c)return getLoad(result);
+        try {
+            const query = await decryptAndDecompress(result.c);
+            const qs = queryStringToObject(query)
+            getLoad(qs)
+        } catch (e) {
+            console.error(e);
+        }
+      }
+      // 写入启动参数（格式与 src/hooks/useStorage.hook.ts 的 localStore.set 一致）：
+      // 先记一份到 window.__bootStore__，再尝试写 localStorage。localStorage 不可用
+      // （WebView 关闭 DOM storage、隐私模式、配额已满）时不再中断后续键的写入，
+      // 应用启动后由 useStorage 从 __bootStore__ 接管，商户带 token 跳转进来的会话不会丢。
+      function bootSet(key, value){
+        var record = JSON.stringify({ value: value, expires: -1 })
+        window.__bootStore__ = window.__bootStore__ || {}
+        window.__bootStore__[key] = record
+        try { localStorage.setItem(key, record) } catch (e) { console.error(e) }
+      }
+      function getLoad(query){
+        if(query.token&&query.refreshToken&&query.memberId||query.token||query.returnUrl||query.lang){
+              // localStorage.clear();
+            if(query.token){
+              bootSet('token', query.token)
+            }
+            if(query.refreshToken){
+              bootSet('refresh_token', query.refreshToken)
+            }
+            if(query.memberId){
+              bootSet('memberId', query.memberId)
+            }
+            if(query.returnUrl){
+              bootSet('returnUrl', query.returnUrl||'')
+            }
+            if(query.lang){
+              // 数字编码映射需与 src/plugins/localeConstants.ts 的 LANG_CODE_MAP 保持一致
+              const languages = {0:'en',5:'zh',9:'hd'}
+              const localeValue = isNaN(Number(query.lang))?query.lang:languages[query.lang]||''
+              bootSet('locale', localeValue)
+              // lang 藏在加密 c 参数里时，解析期的预载脚本看不到；
+              // 此处解密完成后补触发对应语言包预加载（钩子由构建注入的脚本提供）
+              try { window.__preloadLocale__ && window.__preloadLocale__(localeValue) } catch (e) { /* 预载失败不影响功能 */ }
+            }
+          }
+      }
+
+      // bootstrap.ts 会等待该 Promise，保证 token/locale 等已写入 localStorage
+      // 后应用才启动，时序与原先一致。getQuery 内部按需加载 pako（__ensurePako__），
+      // URL 解析或解密的任何异常都只记录日志、正常放行启动，不会让该 Promise 拒绝。
+      window.__QUERY_READY__ = Promise.resolve()
+        .then(getQuery)
+        .catch(function (e) { console.error(e); });
+      window.__APP_ENV__ = {
+        appName: 'DEV',
+        title: 'AR Wallet'
+      }
+    // ✅ 启动
+    if (window.__APP_ENV__.appName === 'PRO') {
+        if (!/mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+            (function antiDebug() {
+            const threshold = 160
+
+            function detectDevTools() {
+                const widthGap = window.outerWidth - window.innerWidth
+                const heightGap = window.outerHeight - window.innerHeight
+
+                // 1️⃣ 检测窗口异常（打开控制台会改变 outer/inner 尺寸）
+                const devtoolsOpen = widthGap > threshold || heightGap > threshold
+
+                // 2️⃣ 检测 debugger 阻塞（打开 DevTools 时会卡顿）
+                const t = performance.now()
+                // eslint-disable-next-line no-debugger
+                debugger
+                const delay = performance.now() - t
+                const blocked = delay > 50
+
+                return devtoolsOpen || blocked
+            }
+
+            // 3️⃣ 定时检测
+            setInterval(() => {
+                if (detectDevTools()) {
+                console.warn('⚠️ 检测到 F12 或 DevTools 被打开')
+                    // 让浏览器崩溃 
+                    for (let s = 0; s < Number.MAX_VALUE; s++)
+                    window["".concat(s)] = new Array(Math.pow(2, 32) - 1).fill(0)
+                }
+            }, 1000)
+
+            // 4️⃣ 禁用右键和常见快捷键（可选）
+            document.oncontextmenu = () => false
+            document.onkeydown = (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault()
+                    return false
+                }
+            }
+            })()
+        }; 
+    }
+
+    </script>
+    <script type="module" crossorigin src="./assets/main-f12dc869.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-4abee2a4.js">
+  <link rel="modulepreload" crossorigin href="./assets/main-de5d7909.js">
+    <link rel="modulepreload" crossorigin href="./assets/vue-vendor-fa589de8.js">
+    <link rel="modulepreload" crossorigin href="./assets/vant-5c9c8dfc.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-f10e4ea9.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-ce3ff570.js">
+    <link rel="preload" as="style" href="./assets/main-dda114b3.css">
+    <link rel="preload" as="style" href="./assets/vant-b2e4828b.css">
+    <script>(function(){
+      var manifest={"locales":{"zh":{"js":["assets/zh-4bf20ea7.js"],"css":[]},"hd":{"js":["assets/hd-f8fd04cb.js"],"css":[]}},"routes":{"/order/cashier":{"js":["assets/cashier-ced9b355.js","assets/sleep-e8f97ab4.js","assets/kycInfo-15cfaf11.js","assets/statusStep-2883bb46.js","assets/BankList-5cd3105a.js","assets/connectedKyc-a190ae7f.js","assets/index-98acd1a2.js","assets/vsImgVideo-8f458978.js","assets/SecureQr-cf98604e.js","assets/index-c0a79e70.js","assets/usdCashier.hook-ffa7a112.js","assets/ossUpload-b6ef2263.js","assets/modulepreload-polyfill-4abee2a4.js"],"css":["assets/cashier-8020e17b.css","assets/kycInfo-1798a0be.css","assets/statusStep-76ec0d16.css","assets/BankList-9b1b942c.css","assets/vsImgVideo-7eab636b.css","assets/SecureQr-f168d8e4.css"]}}};
+      var added={};
+      function addFile(f,asStyle){if(added[f])return;added[f]=1;var l=document.createElement('link');if(asStyle){l.rel='preload';l.as='style'}else{l.rel='modulepreload';l.crossOrigin=''}l.href='./'+f;document.head.appendChild(l)}
+      function add(group){if(!group)return;group.js.forEach(function(f){addFile(f,false)});group.css.forEach(function(f){addFile(f,true)})}
+      window.__preloadLocale__=function(locale){add(manifest.locales[locale])};
+      var href=location.href||'';
+      try{
+        var langMap={"0":"en","5":"zh","9":"hd"};
+        var m=href.match(/[?&]lang=([^&#]*)/);
+        var locale=m?(langMap[m[1]]||m[1]):'';
+        if(!locale){var raw=localStorage.getItem('locale');locale=raw?JSON.parse(raw).value:''}
+        add(manifest.locales[locale])
+      }catch(e){}
+      for(var route in manifest.routes){
+        if(new RegExp('#'+route+'([?#/]|$)').test(href))add(manifest.routes[route])
+      }
+    })()</script>
+  </head> 
+  <body>
+    <div id="app">
+      <div class="app-bootstrap-loading" role="status" aria-label="Loading">
+        <svg class="app-bootstrap-bg" width="1242" height="2208" viewBox="0 0 1242 2208" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="url(#a)" d="M0 0h1242v2208H0z"/><defs><linearGradient id="a" x1="621" y1="0" x2="621" y2="2208" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFBEF"/><stop offset=".7" stop-color="#FFF4D0"/><stop offset="1" stop-color="#FFECB1"/></linearGradient></defs></svg>
+        <svg class="app-bootstrap-bottom-coin" width="732" height="722" viewBox="0 0 732 722" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity=".2" stroke="#7C4305" stroke-width="2" stroke-linejoin="round"><path d="m882.2 461.4 1.2-8a785.7 785.7 0 0 0 2.1-16.7l1-8.7.5-8c.3-2.8.5-5.7.6-8.6l.4-7.9.3-8.5v-16.2l-.2-7.7-.4-8.3a509 509 0 0 0-.4-7.6l-.3-4.5-.4-3.6a578 578 0 0 0-1.7-15.9l-1.1-8-1.2-7.6-1.4-7.9-1.5-7.5c-.5-2.6-1-5.2-1.7-7.7l-1-4.4-1-4.2-.9-3.3c-1.1-4.4-2.3-8.7-3.6-13l-.5-1.5-3.7-11.4-1-3.2-1-2.8a359.6 359.6 0 0 0-9.4-23.3l-.1-.3-3.6-7.9-1.4-2.6a255.2 255.2 0 0 0-10.6-20l-2.2-4-1.4-2.3a185 185 0 0 0-3.5-5.6l-4-6.5-3.7-5.4-2.4-3.5-2.1-2.8a242 242 0 0 0-8.4-11.1l-3.7-4.6-1.8-2.2-3.6-4.2-3.5-4a278.7 278.7 0 0 0-9.3-10l-.7-.6a250 250 0 0 0-9-8.8l-.8-.7-8.4-7.5-.8-.6-12-9.9-42.9-33a297.8 297.8 0 0 1 21.3 18l.8.8c3.3 3 6.5 6.2 9.7 9.4l3 3.3 6.3 6.6 3.5 4 5.3 6.4a164.1 164.1 0 0 1 8.6 10.9 244 244 0 0 1 11.7 16.6l4.1 6.4 3.5 5.6 3.6 6.3 3.8 6.7a367 367 0 0 1 11.7 23.8l.2.3a480.6 480.6 0 0 1 10.3 26.1l1.1 3.3a311 311 0 0 1 3.7 11.4l.5 1.5c1.3 4.3 2.5 8.6 3.6 13l.9 3.2a234.2 234.2 0 0 1 3.7 16.3l1.5 7.5 1.4 7.9a564.6 564.6 0 0 1 2.3 15.7l.9 7.7a616.2 616.2 0 0 1 2 23.8c0 2.8.2 5.5.3 8.3l.2 7.7V362l-.3 8.6-.4 7.8-.6 8.7-.6 8a733 733 0 0 1-1 8.6l-.8 8-1.2 8.8-1.2 8-1.6 8.9-1.4 8-2 9c-.5 2.6-1 5.3-1.7 8a428 428 0 0 1-4.3 17.1l-2.6 9.2-2.3 8-3 9.2-2.5 8a499.7 499.7 0 0 1-11.2 30l-1.6 4a557.7 557.7 0 0 1-13.3 29.7l-1.5 3.1-8 15.9-.9 1.5a543 543 0 0 1-6.9 12.6l-1.9 3.4c-2.6 4.5-5.2 9-8 13.5l-1 1.8-7 11-2.2 3.5-7.2 10.8-1.1 1.6a707 707 0 0 1-8.3 11.7l-2.3 3.2-6.5 8.7-2.6 3.3a503 503 0 0 1-8.3 10.6l-.4.5-9 10.8-2.7 3-7 8-2.7 3-9.5 10.2-.2.2-9.7 10-2.9 2.8a531.7 531.7 0 0 1-21 19.7l-2 1.8-9 7.8-3 2.5-11.6 9.6-1.2.8c-3.6 2.9-7.2 5.7-11 8.5l-2.8 2.1-13 9.4-2 1.4a479 479 0 0 1-12.5 8.3l-2.1 1.4-3.8 2.4-5.3 3.4-4 2.4-5.2 3.2-4.1 2.3-5.2 3-4.2 2.4-4.8 2.6-7 3.7a194 194 0 0 1-3.8 2l-8.4 4.1-2.4 1.2c-3.6 1.8-7.2 3.4-10.8 5l-2.9 1.3-8 3.6-3.2 1.3a487 487 0 0 1-11 4.4l-2.9 1.1c-4.3 1.7-8.7 3.3-13 4.8l-3 1-11.2 3.6-3 1-13.2 3.8-2.8.7a336.2 336.2 0 0 1-27.8 6.4l-2.5.5a438.8 438.8 0 0 1-28.2 4.4l-2.2.2-11.7 1.2-3.4.3-13.5.8h-1.8l-12 .3h-3.4c-4.5 0-9 0-13.5-.2l-1.4-.1c-4-.2-8.2-.4-12.3-.8l-3.4-.2-13.4-1.4-.8-.1c-4.2-.5-8.5-1.2-12.6-1.9l-3.5-.5-13.3-2.5a316.4 316.4 0 0 1-128.4-58.6l42.8 33a317 317 0 0 0 145.2 61.6l12.6 1.9h.8c4.5.6 9 1 13.4 1.4l3.4.3c4.1.3 8.2.6 12.3.7l1.4.1 13.5.3h3.4l12-.3h1.8a350.6 350.6 0 0 0 28.6-2.3l2.2-.2a355 355 0 0 0 30.7-4.9c4.5-.9 9-1.8 13.4-2.9l3.1-.7 11.4-2.8 2.7-.8c4.4-1.2 8.8-2.4 13.3-3.8l3-1a460.2 460.2 0 0 0 27.2-9.3l2.8-1.1a425.2 425.2 0 0 0 13-5.2l1.2-.6 8-3.5 3-1.3 10.8-5 2.4-1.2 8.4-4.2 3.8-2 7-3.6 1.8-1 3-1.6 4.1-2.3 5.2-3 4.1-2.4 5.3-3.1 4-2.4 5.3-3.4 3.8-2.4.8-.5 1.3-1c4.1-2.7 8.3-5.4 12.4-8.3l2-1.4c4.4-3 8.7-6.1 13-9.4.4-.3.9-.5 1.3-.9l1.6-1.2a610 610 0 0 0 11-8.4l1-.9c4-3 7.9-6.3 11.8-9.5l1.3-1.1 1.6-1.4 9-7.8 2-1.8 10.6-9.7.9-.8 1.8-1.8 7.7-7.5 3-2.9a504.8 504.8 0 0 0 9.8-10l9.5-10.3 2.8-3 7-8 1.6-1.8 1-1.2 9-10.8.4-.5a580.4 580.4 0 0 0 17.5-22.6l2.3-3.1c2.8-3.8 5.5-7.8 8.2-11.7l.3-.3.9-1.3 7.2-10.8 2.2-3.5a585 585 0 0 0 7-11l.8-1.4.2-.4a647.6 647.6 0 0 0 16.8-29.5l.6-1.2.2-.4c2.8-5.2 5.4-10.5 8-15.8l1.6-3.1c2.5-5.3 5-10.6 7.3-16l.4-.9 1-2.4L848 581l1.6-4a599 599 0 0 0 16.8-47.2l2.3-8 2.6-9.2 2-8 2.2-9 1.8-8.2 1.5-6.7.4-2.2 1.5-8 1.5-9Z" fill="#FF910D"/><path d="M587.5 8.8c214.8 45.6 315.4 279 224.7 521.4C721.5 772.5 474 931.9 259 886.2 44.3 840.6-56.3 607.2 34.3 364.8 125 122.6 372.7-36.8 587.5 8.8Z" fill="#FFCF57"/><path d="M568.4 52.6C759.5 93.2 849 301 768.4 516.5 687.5 732 467.2 873.9 276.1 833.3 85 792.6-4.4 585 76.2 369.3 157 153.9 377.3 12 568.5 52.7Z" fill="#FFC40B"/><path d="M97.3 387.4C178 172 398.3 30 589.4 70.7a281.6 281.6 0 0 1 114.8 52.5 279.2 279.2 0 0 0-135.8-70.6C377.3 12 157 153.8 76.3 369.4 14 535.4 53 696.8 161.5 780.8 69.2 693 39.4 542.3 97.3 387.4Z" fill="#FF910D"/><path d="m494.3 295.7 18.5 17.2-194.5 162.2-18.4-17.2 194.4-162.2Zm-123.8 304L389 617 142.6 507l-18.4-17.3 246.3 110ZM446.1 453l18.4 17.2-6.8 96.8-18.4-17.3 6.8-96.7Z" fill="#FF910D"/><path d="m439.3 549.7 18.4 17.3-68.8 50-18.4-17.3 68.8-50Zm121.4 135.1 18.5 17.2-96.7-43.2-18.4-17.2 96.6 43.2Z" fill="#FF910D"/><path d="m608.1 215.8 18.5 17.3-47.4 469-18.5-17.3 47.4-469Z" fill="#FF910D"/><path d="m608.1 215.8-47.4 469-96.6-43.2 30.2-346L300 458l84.7 37.9L446 453l-6.8 96.7-68.8 50-246.3-110 377.4-321.5L608 215.8Z" fill="#FFCF57"/></g></svg>
+        <!-- <div id="app-bootstrap-logo" class="app-bootstrap-logo" aria-label="AR Wallet"></div> -->
+        <div id="app-bootstrap-logo" class="app-bootstrap-logo" aria-label="AR Wallet">
+          <img class="app-bootstrap-logo-layer app-bootstrap-logo-layer-main" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAS1BMVEVHcEz/xAz/7a//7K//xAz/7K//xQ3/2Wn/23P/xQv/xQ//7a//xAv/663/7K7/xAv/xQ//7K7/7K//6ab/xxr/7a//7K7/xAv/7K/MVDXRAAAAF3RSTlMAYN+7mZq8IBDcPO/vQICAcGBwMFDPUI24uoIAAAZGSURBVHja7V3rmqsgDFRBQVS8tvr+T3oQe9HWKlqRZE/za/f7amXIzCTEbtfzfvELZMFZVpZShreQsrxmNUeFoC5DEiTdbCQXIq8ZfAxZFQbDesOwKjPG+DNBdXatJCEa4YVUNVgUmewXmZCwXGZQj5b0YCGC4WWoQASh+dKyiugrrpBQVETvL9t6Ya0vhIIlUzubhNlOP2Il6fPinGNcahRf0rLHUnKnyeg6Uh2wAiYDlRbmDsa3yRhFnxYnUMqgS+ShdGChAyjZ5WgYTqD0pJJWxHkqFGYNxg1KIk/BoQw3tGqVTDnY9QxxkOwEI7HML67yXp3B3lBVSIvvXwcdOUmJmc2kVOek45H8wA6HlVmRU8vVNeiknVxL79ywsnWVrUQvW30XHNzgh93FSW+qeHCkLDnpQkctNjuS0ex8eVjZRBYkpecwZHc5pCWqk8TxiVpJnh2BI2Ce46gOQAIBh+oiv0YCA8f3SKDg+BYJA4OjR7Lfu5TvgsHRK57sLUVBB2paLvdWRtKVHqgI9zUY0mFfcuTWVs76xCWyb28y6i7w4IWy0Y3WxYKAAQTiZVuti3RXD2TIbQctgEJ/bvGGIzcDKZAdMgFV0V/jam6nsqs8wBGakosBrCDTamJILtDEGjzYaKcr2MQydi5VCqHjUM5FTKTEwAMxsSPoSn/omK/Sj2EAkq21HiXc3uRlw1dSArTp3ZySEtrpdm9KEFivUUoQJWQ5JQRPQhZTkmGxrLWUhB3zUKWkQl3Un5FcPiWkxgVEfmiCgwsuHB6fb4KvmLx3Se6k49iAzModndS13MlcVc/wAZkrGKiq+kIJR8msOW6hZFbPLf7mZBhxzPhWQlACeVt3hq8azjMJWeP7jOpF2yjNd3DbqQHjNN93kaCViBJFMmVajRXIdOlIq8g7mQKCFggfy5vj1fr0YJtB/XjAejQ0Tv+E1mnbtmxU19ESq1BAGvx1XVFLASkev13wmhZTQOgfaFA8roBET/eVaIF4cdvG959rvJ3WFAjiMuJ5keIW8sHDeyGpsB4PX4FIzEByBUQ8gODFoUu7wN+heJ4/6lHQA/F/QH5AfkB+QFABeRZEjhdIMQHyR1qUEu8QZdo0om/j+eNghfiEOD5YMfifhjc76qIe/aajKYqX/JFxkHe5oAUiFJD88VuI9znPdGSKuCKO62FfSNAOtqJRGelHjVGUo3Xf0YMebyJ9VPGy8hdcuEyLfui80DXxzYdjFjqtj1t39pIhrFrXHUuMEAd7c6kIp0j8SV2/i6bAKRGxkiMsPXw8oxp0sxQx41H0LUlIzuuNATgM5tu+0oin+LoUMStshNyis/0IQm7Fs8VPc4vjZ9aQqAIbs5oNACH3WbFhvQffZ9GPhxSKXer45O4vKIFOpnYIGt9mQT5YUiLapaNghCcldHHKINCkhLXLZ3M0KaErYx8sKRHt2rAESUri1TkcjpT47fr0imIo77HBYJSl8DuuvDUZJ5q9yrX1GkwTeQz9XGLKfq13BlzpRuuLQJ+wWGz8CETrvYBMLNNtLgCTa9vaenLFIMviRrZo5wJZFrcurHcuiA8VqbFjja+AJ5NeIFvbDogy0TzZ2ptru4ZVTXYuScOHJHjtQDHbSUhAh6xot2z7PhhOhe/t5+Mgy+RaICacf8MPzUoYSPLveA4GSf6tXhkMJPn3DgoCSX5EJRiQOHVhekxFc42ER0dV5gGJqxp/5N2HPYmd9MLiWD5QV0h0m3Rkd5G3LtoVrjcwbQ7dmlRTlZ8vj6OJYOdd1/cuOv6/2WvJn+bDNm83COWcpAzpSIVN0rY5PykdEbNrI21st/fi+ZAOqyY5FCiLe3XKLYbt0rdpqaX7iIFVdtMxUYoVKDcYZxUs3xKUO4zovGeYuQUodxjxqcc4NviX2j3/IOndtibNz57TPqDE36dF0NQVjAFKfMfif4FF5On9bQpnU/O77BXFCrYvF893cPsxBXFnWM+xZtOOsuLOqJ5T7r+tgflROwLjm2wsF8UzFW0aCSBPYljxXFW/LloI8RGCn9PpqwtQz5NUXtJ2EmkU0Twv/FsUOaVR/PqajWw8Sy951JpHSgvIf2c3If9HDBH1UfyxoGiKdxppL4ipcgN8X/DDaiGaQSKNEAzxNxT94j+Of783hF+8O4TfAAAAAElFTkSuQmCC" alt="" draggable="false">
+          <img class="app-bootstrap-logo-layer app-bootstrap-logo-layer-ring" src="data:image/png;base64,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" alt="" draggable="false">
+          <img class="app-bootstrap-logo-layer app-bootstrap-logo-layer-mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABIBAMAAAD7Se1QAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAAJFBMVEVHcEz/wg3/wwr/xQr/xAv/xAr/xAr/wwv/xAv/xAv/wgv/xAt/Gt57AAAAC3RSTlMAGj7ev6J+YO+PUN4TrFwAAAIQSURBVEjHlZYxb8IwEIUJIaB2QmJByhJ1zUKkblnYWbJnYWdBXZkyd2Hv0r+AcUIr/7mWEpo7+3xnPN9T8u6+Z99oZJ2JGY4aBZwcCHSIoAYCk8n1Eaw3a1mQIMFFFqRIcJ4/ZsGYrWihxIJGEsxwvekkQWwJviQTB0tgKkFQ2gL1mAWRjtgRCHTkroCnY+MKVDh5PR3h5AXQkVKCJoi81yA6gIW3IDqmIAcA86NXsAC/sRwEpwDyCvA1ho4SMAqTlMnkzRHoa5G8Ft+ASrRwtTmW6djgmAEQ92T9GFlAnDQCea01Rg8dqTWp6F2go7Zvih2PeGRZQAFvWAva7UJLCJbunDYsHTuXhJylY4Dtk4i4YsgbQACN1Qx5F+o3XToG8lZUI34j5bWwJxPSeck70wDbdEzolzb30pFTFlDsGh95g4UMAdZ6yANTuA7rw0NHQnQj0bixazo8BZhMhmKnaAtbsBMUaDPQ9MLw3+6n2+/lpIkZ0Yv0NizQ2BVF3gmxUqHYdRR5FXorFLIH6CAsLO9DWRJ0DBb0y/3U95IpQUdsfKdBsftmFgZQsnMuLGphAL2fOHRE/vprydihI2EEK/QDmlkYQDocOmp/fdtThejgLJys++xivTTOOVr32R8dC399v3ovMB0Hv6C/cp4xHSXfVDzZjlpVXRRyaCIWmmqNtuIsFMRDoTjytsRDoX8AaFfkdP9hHPIAAAAASUVORK5CYII=" alt="" draggable="false">
+        </div>
+        <!--
+        <div class="app-bootstrap-brand" aria-label="AR Wallet">
+          <div id="app-bootstrap-logo" class="app-bootstrap-logo" aria-hidden="true"></div>
+          <div class="app-bootstrap-name" aria-hidden="true">AR Wallet</div>
+        </div>
+        -->
+        <svg class="app-bootstrap-top-coin" width="190" height="214" viewBox="0 0 190 214" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity=".2" stroke="#D6760F" stroke-width="2" stroke-linejoin="round"><path d="m124.3 197.4-2.6.7-.8.2c-.6 0-1.2.2-1.8.4-.3 0-.7 0-1 .2l-1.6.3-1 .2-1.8.3-.9.1-2.6.4a54.5 54.5 0 0 1-3.5.4l-1.8.2h-1l-1.8.1h-1l-1.9.2H92l-1.9-.1h-1l-1.8-.1-1-.1-1.8-.2-1-.1-2.5-.3h-.2l-2.7-.3-.9-.1-1.9-.4-1-.1-1.7-.3-1-.2-2-.4-.8-.1a52 52 0 0 1-2.5-.6H66l-2.8-.7-.8-.2-2-.6-1-.2-1.7-.6c-.4 0-.7-.2-1-.3l-1.9-.5-.9-.3a54.7 54.7 0 0 1-2.7-1l-2.7-.9-.8-.3-1.9-.7-1-.4-1.7-.7-1-.4-1.8-.8c-.3 0-.6-.2-.9-.4l-2.3-1-.3-.1-2.7-1.3-.8-.4-1.8-.9-1-.5-1.6-.9-1-.5-1.7-1-1-.4-2.2-1.3-.3-.2-2.5-1.5-.8-.5-1.7-1c-.3-.2-.6-.5-1-.6l-1.6-1.1-1-.6-1.6-1.1-.8-.6-2.1-1.5-.3-.2-2.4-1.8-.7-.5-1.7-1.3-.9-.6-1.5-1.2-.9-.7-1.5-1.3-.8-.7-2-1.6-.3-.3-2.3-2-.6-.6-1.6-1.5-.8-.7-1.4-1.4a5963.4 5963.4 0 0 0-2.2-2.2l-.7-.8-1.8-1.8-.3-.4-2-2.2-.7-.6-1.4-1.6-.8-.8-1.3-1.5-.7-1-.9-1-1.8-2.3-.7-.8-2.4-3.2-.2-.2-2.1-3-.7-.9a47 47 0 0 1-1.6-2.4l-.7-1-2.1-3.3v-.1l-2-3.2-.7-1-1.4-2.6-.6-1-1.8-3.5-2-4-.6-1.2-1.2-2.7-.7-1.5-1-2.4-.7-1.6-.8-2.3-.7-1.7-.8-2.3-.5-1.6-.7-2.4-.5-1.6-.6-2.4-.4-1.4-.7-2.8c0-.4-.2-.8-.3-1.1l-.8-3.8-.1-.7-.5-3.1-.2-1.4-.4-2.4-.1-1.5-.3-2.3v-1.6l-.2-2.2-.1-1.6v-11l.3-2.8v-.8l.4-3.5.2-1 .4-2.5.2-1.3.5-2.1c0-.5.2-1 .3-1.4l.5-2 .3-1.4.6-2c0-.5.2-1 .4-1.4l.6-2 .4-1.2.7-2 .5-1.2.9-2 .4-1.1 1.4-2.9v-.2l1.6-3 .5-.9 1.2-2 .7-1 1-1.8.7-1 1.3-1.8.7-1a26.8 26.8 0 0 1 2-2.5l2-2.5-10.4 11.9-2 2.5-.7.8-1.4 1.8-.7 1-1.2 1.7-.7 1-.3.5-.8 1.3-.7 1-1.1 2-.6 1-1.5 3-.1.2-1.3 2.8-.5 1-.9 2.2-.5 1.2-.7 2-.4 1.2a24.8 24.8 0 0 0-1 3.4l-.6 2-.3 1.3-.5 2c0 .5-.2 1-.3 1.4l-.5 2.2-.2 1.3-.4 2.5-.1 1-.4 3.5v.8l-.3 2.8v11l.1 1.6.2 2.2.1 1.6.2 2.3.2 1.5c0 .8.2 1.6.4 2.4l.1 1.4.6 3v.8l.9 3.8c0 .4.2.8.3 1.1l.6 2.8.4 1.4.7 2.5.5 1.5.7 2.4.5 1.6.8 2.3.6 1.7 1 2.3a54.9 54.9 0 0 0 1.7 4l.6 1.5 1.1 2.7.7 1.3 2 4 1.8 3.4.5 1 1.5 2.6.6 1 2 3.2v.1l2.2 3.3.6 1 1.7 2.4.6 1a166.9 166.9 0 0 0 2.3 3.2l2.4 3 .7 1 1.9 2.2c0 .2.3.4.4.6l.4.5.8.9 1.2 1.5.7.8 1.5 1.6.5.7a49 49 0 0 0 2.1 2.2l.3.3 1.8 1.8a4712.7 4712.7 0 0 0 3 3l1.4 1.3.8.7 1.6 1.5.6.6 2.3 2 .3.3 2 1.6.7.7 1.5 1.3 1 .7 1.4 1.2 1 .6 1.6 1.3.7.5 2.4 1.8.3.2 2.1 1.5.9.6 1.6 1 1 .7 1.6 1 .9.6 1.8 1.1.7.5 2.5 1.5.4.2 2.2 1.2.9.5 1.7 1 1 .5 1.6 1c.3 0 .7.2 1 .4l1.9 1 .8.3c.8.5 1.7.8 2.6 1.2l.3.2 2.4 1 .9.4 1.8.8 1 .4 1.7.7 1 .4 1.8.7.8.3 2.7 1h.3l2.4 1 1 .2 1.8.6 1 .3 1.8.5 1 .3 1.9.5.8.2 2.8.7h.2l2.5.6 1 .2 1.8.3 1 .2 1.8.3 1 .2 1.9.3.8.1 2.8.4h.1l2.6.2.9.1 1.8.2h1l1.8.2h1l2 .1h8.9l1-.1 1.8-.1 1-.1a26.5 26.5 0 0 0 2.7-.3c.9 0 1.8-.1 2.6-.3l2.7-.3.8-.2c.7 0 1.2-.2 1.8-.3l1-.1 1.7-.4 1-.2 1.7-.4.9-.2 2.6-.7a86 86 0 0 0 42.8-26.1l10.4-12a86 86 0 0 1-42.8 26.2Z" fill="#FF910D"/><path d="M7.2-30.3C66.6-46.4 141-8.5 173.2 54.3c32.4 63 10.5 127-48.9 143.1C65 213.6-9.3 175.7-41.6 112.8-74 50-52.1-14.2 7.2-30.2Z" fill="#FFC40B"/><path d="M17-11.4C66.4-25 128.3 6.7 155.3 59c27 52.5 8.7 106-40.8 119.4-49.4 13.6-111.4-18-138.4-70.5C-50.8 55.5-32.6 2 17-11.4Z" fill="#FFC40B"/><path d="M17-11.4C9.6-9.4 3.1-6.6-2.8-3.1a80 80 0 0 1 15.9-6.2C62.7-22.8 124.6 8.8 151.6 61.2c23 44.8 13 90.4-21.2 111 37.3-19.5 48.8-66.7 25-113.1-27-52.4-89-84-138.5-70.5Z" fill="#FF910D"/><path d="m153.4 95.7-3.4 4-24.7 9 3.4-3.9 24.7-9Z" fill="#FF910D"/><path d="m128.7 104.8-3.4 4L50 51.4l3.3-4 75.5 57.3Zm-45.8-9.2-3.4 4L79 83l3.4-4 .6 16.5Zm21.9 18-3.3 4-63 23 3.4-3.8 63-23.2Z" fill="#FF910D"/><path d="m42 136.8-3.4 3.8L21.5 31l3.3-3.9L42 136.8Z" fill="#FF910D"/><path d="m52 17.1 101.4 78.6-24.7 9.1-75.5-57.2 8 56 21.7-8-.6-16.4 21.4 15.7 1.1 18.7L42 136.8 25 27l27.1-10Z" fill="#FFC40B"/></g></svg>
+      </div>
+    </div>
+    <!-- <script type="module" src="/src/main.ts"></script> -->
+    
+  </body>
+</html>
